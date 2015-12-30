@@ -34,23 +34,23 @@ class ColorDescriptor
     # construct an elliptical mask representing the center of the image
     (axesX, axesY) = [(w * 0.75).to_i / 2, (h * 0.75).to_i / 2]
     ellipMask = CvMat.new(h, w, :cv32f, 3)
-    ellipMask = ellipMask.ellipse(CvPoint.new(cX, cY), CvSize.new(axesX, axesY), 0, 0, 360, {color: CvColor::White, thickness: -1})
+                  .ellipse(CvPoint.new(cX, cY), CvSize.new(axesX, axesY), 0, 0, 360, {color: CvColor::White, thickness: -1})
 
     # loop over the segments
     for (startX, endX, startY, endY) in segments
       # construct a mask for each corner of the image, subtracting
       # the elliptical center from it
-      cornerMask = image
-      cornerMask = cornerMask.rectangle(CvPoint.new(startX, startY), CvPoint.new(endX, endY), { color: CvColor::White, thickness: -1})
-      cornerMask = cornerMask.sub(image)
-      cornerMask = cornerMask.sub(ellipMask)
+      cornerMask = image.rectangle(CvPoint.new(startX, startY), CvPoint.new(endX, endY), { color: CvColor::White, thickness: -1})
+                     .sub(image)
+                     .sub(ellipMask)
       
       # extract a color histogram from the image, then update the
       # feature vector
       features << histogram(cornerMask)
     end
 
-    ellipIMask = image.ellipse(CvPoint.new(cX, cY), CvSize.new(axesX, axesY), 0, 0, 360, {color: CvColor::White, thickness: -1}).sub(image)
+    ellipIMask = image.ellipse(CvPoint.new(cX, cY), CvSize.new(axesX, axesY), 0, 0, 360, {color: CvColor::White, thickness: -1})
+                   .sub(image)
     features << histogram(ellipIMask)
     return features.flatten
   end
