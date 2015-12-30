@@ -1,3 +1,6 @@
+# This script is heavily inspired by a great python tutorial on the same subject:
+# http://www.pyimagesearch.com/2014/12/01/complete-guide-building-image-search-engine-python-opencv/
+
 require 'opencv'
 require 'byebug'
 require 'csv'
